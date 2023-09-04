@@ -59,3 +59,6 @@ After the change, execute the following command.
 
 ## License
 BSD
+
+## Tested on ...
+- ubuntu 20.04 LTS
