@@ -1,3 +1,3 @@
 #!/bin/bash
 
-eval "docker container exec -it noetic-pytorch bash"
+eval "docker container exec -it noetic-cartographer bash"
