@@ -1,7 +1,9 @@
-FROM masakifujiwara1/ros2:humble-mappings
+FROM osrf/ros:noetic-desktop-full
 
-WORKDIR /home
-ENV HOME /home
+SHELL ["/bin/bash", "-c"]
+
+WORKDIR /home/user
+ENV HOME /home/user
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TZ Asia/Tokyo
@@ -9,42 +11,31 @@ ENV TZ Asia/Tokyo
 ENV NVIDIA_VISIBLE_DEVICES ${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
-ENV DEBIAN_FRONTEND=noninteractive
+# SHELL ["/bin/bash", "-c"]
 
-SHELL ["/bin/bash", "-c"]
+# install apt
+RUN sudo apt-get update && sudo apt-get -y upgrade
+RUN sudo -s && sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && sudo apt-get -y install tzdata
+RUN sudo apt-get update && sudo apt-get install -y vim git lsb-release gnupg tmux curl
+RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y keyboard-configuration
 
-# install vim
-# RUN apt-get update -qq
-# RUN apt-get install -y tzdata
-# RUN apt-get update && apt-get install -y vim git lsb-release sudo gnupg tmux
+# install pip3
+RUN sudo apt-get install -y python3-pip
 
-# install python3
-# RUN apt-get install -y python3 python3-pip
+RUN sudo apt-get install -y ros-noetic-rqt-* 
+RUN sudo apt-get install -y python3-catkin-tools
 
-# install pytorch
-# RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+# set catkin workspace
+COPY config/git_clone.sh /home/user/git_clone.sh
+RUN . /opt/ros/noetic/setup.sh
+# RUN rm -rf /root/src /root/catkin_ws
+RUN sudo --user $USER mkdir -p catkin_ws/src && cd ~/catkin_ws 
+RUN cd ~/catkin_ws/src && . /home/user/git_clone.sh
 
-# ros2 humble setup
-# RUN git clone --depth 1 https://github.com/ryuichiueda/ros2_setup_scripts
-# RUN ./ros2_setup_scripts/setup.bash -xv
-
-# RUN apt-get install -y gazebo ros-humble-gazebo-* 
-# RUN apt-get install -y ros-humble-rqt-* 
-
-# set ros2 workspace
-# COPY config/git_clone.sh /home/git_clone.sh
-# RUN . /opt/ros/humble/setup.sh
-# RUN mkdir -p ros2_ws/src && cd ~/ros2_ws && colcon build
-# RUN cd ~/ros2_ws/src && . /home/git_clone.sh
-# RUN . /opt/ros/humble/setup.sh && cd ~/ros2_ws && colcon build --symlink-install
-# RUN source /opt/ros/humble/setup.bash && source ~/ros2_ws/install/local_setup.bash
-
-COPY config/.bashrc /home/.bashrc
-COPY config/.vimrc /home/.vimrc
+COPY config/.bashrc $HOME/.bashrc
+COPY config/.vimrc $HOME/.vimrc
 
 # clean workspace
-# RUN rm -rf git_clone.sh
+RUN sudo rm -rf git_clone.sh ros_setup_scripts_Ubuntu20.04_desktop :
 
-# RUN apt-get install -y ros-humble-dynamixel-sdk ros-humble-turtlebot3-msgs ros-humble-turtlebot3
 
-# RUN cd ~/ros2_ws/src && git clone -b humble-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
