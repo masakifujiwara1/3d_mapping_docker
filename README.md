@@ -57,7 +57,7 @@ After the change, execute the following command.
 * [ros1-noetic](https://github.com/masakifujiwara1/3d_mapping_docker/tree/ros1-noetic)
   * 3d-slam: [cartographer](https://github.com/ros2/cartographer)
   * apt install: vim, git, tmux
-* [cartographer-tsukuba2023](https://github.com/masakifujiwara1/3d_mapping_docker/tree/cartographer-tsukuba2023) -> Customized cartographer parameters and more for Tsukuba Challenge 2023 （ROS2）
+* [cartographer-tsukuba2023（ROS2）](https://github.com/masakifujiwara1/3d_mapping_docker/tree/cartographer-tsukuba2023) -> Customized cartographer parameters and more for Tsukuba Challenge 2023 
   * 3d-slam: [LIO-SAM](https://github.com/TixiaoShan/LIO-SAM), [li_slam_ros2](https://github.com/rsasaki0109/li_slam_ros2), [cartographer](https://github.com/ros2/cartographer)
   * other ROS src: [imu_tools](https://github.com/CCNYRoboticsLab/imu_tools)
   * apt install: vim, git, tmux
